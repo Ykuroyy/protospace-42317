@@ -51,7 +51,7 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     curl \
     libpq5 \               
-    libpq-dev \          
+    # libpq-dev \          
     libvips && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
