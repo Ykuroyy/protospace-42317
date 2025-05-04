@@ -39,7 +39,7 @@ gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Reduces boot times through caching; required in config/boot.rb
-# gem "bootsnap", require: false
+gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
@@ -73,4 +73,6 @@ gem 'mini_magick'
 
 gem 'image_processing'
 
-gem 'pg'
+group :production do
+  gem 'pg'
+end
