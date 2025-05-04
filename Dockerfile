@@ -19,13 +19,21 @@ FROM base as build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git libvips pkg-config
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    libpq-dev \                # ← pg用に必要！
+    default-libmysqlclient-dev \
+    git \
+    libvips \
+    pkg-config
+
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
+
 
 # Copy application code
 COPY . .
@@ -43,15 +51,11 @@ FROM base
 # Install packages needed for deployment
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
-    build-essential \
-    default-libmysqlclient-dev \
-    git \
-    libvips \
-    pkg-config \
-    libpq-dev
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl default-mysql-client libvips && \
+    curl \
+    default-mysql-client \
+    libvips && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
