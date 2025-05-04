@@ -21,12 +21,10 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
-    libpq-dev \  
-    default-libmysqlclient-dev \
+    libpq-dev \             
     git \
     libvips \
     pkg-config
-
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
@@ -52,10 +50,10 @@ FROM base
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     curl \
-    default-mysql-client \
+    libpq5 \               
+    libpq-dev \          
     libvips && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
 
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
@@ -72,3 +70,5 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 CMD ["./bin/rails", "server"]
+
+
