@@ -21,7 +21,7 @@ FROM base as build
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
-    libpq-dev \                # ← pg用に必要！
+    libpq-dev \  
     default-libmysqlclient-dev \
     git \
     libvips \
